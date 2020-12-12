@@ -1,0 +1,82 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.header {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+.octicon {
+  vertical-align: text-top;
+}
+
+.repositories {
+  width: 350px;
+}
+
+.star-badge {
+  float: right;
+  color: #777;
+}
+
+.star-badge-header {
+  margin-left: 10px;
+  vertical-align: text-bottom;
+}
+
+.star-badge .octicon {
+  color: #777;
+}
+
+.star-badge .highlight {
+  color: #e36209;
+}
+
+.star-form {
+  display: inline;
+}
+
+.star-form button {
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-pills .badge {
+  background-color: #ccc;
+}
+
+.show-more .spinner {
+  display: none;
+}
+
+.show-more.loading .spinner {
+  display: inline-block;
+  float: right;
+  animation-name: spin;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  padding-left: 4px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  } to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,25 @@
+<nav class="main-header navbar navbar-expand navbar-blak header-blue-primary">
+  <a class="nav-link js-click-a" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+
+  <!-- Right navbar links -->
+  <ul class="navbar-nav ml-auto">
+    <!-- Notifications Dropdown Menu -->
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="dropdown" href="#" title="マイページ">
+        <%= image_tag 'img/default_user.png', class: 'img-circle my-page-img', alt: 'User Image' %>
+      </a>
+    </li>
+
+    <!-- Messages Dropdown Menu -->
+    <li class="nav-item dropdown">
+      <a class="nav-link" data-toggle="dropdown" href="#" title="ヘルプ">
+        <span><%= @user.username if @user.present?%></span>
+      </a>
+    </li>
+  
+     <li class="nav-item dropdown">
+      <%= link_to 'Logout', logout_path, class: "nav-link", method:'delete'%>
+      </a>
+    </li>
+  </ul>
+</nav>

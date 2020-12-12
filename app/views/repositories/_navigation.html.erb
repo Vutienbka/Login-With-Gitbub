@@ -1,0 +1,50 @@
+<%graphql
+  fragment Repository on Repository {
+    hasIssuesEnabled
+    issues {
+      totalCount
+    }
+    pullRequests {
+      totalCount
+    }
+  }
+%>
+<% repository = Views::Repositories::Navigation::Repository.new(repository) %>
+
+<ul class="nav nav-pills pull-right">
+  <li role="presentation" class="active">
+    <a href="#">
+      <span class="octicon octicon-code"></span>
+      Code
+    </a>
+  </li>
+  <%# NOTE: has_issues_enabled is snake case here. We can also include an optional `?` %>
+  <% if repository.has_issues_enabled? %>
+    <li role="presentation">
+      <a href="#">
+        <span class="octicon octicon-issue-opened"></span>
+        Issues
+        <span class="badge"><%= repository.issues.total_count %></span>
+      </a>
+    </li>
+  <% end %>
+  <li role="presentation">
+    <a href="#">
+      <span class="octicon octicon-git-pull-request"></span>
+      Pull requests
+      <span class="badge"><%= repository.pull_requests.total_count %></span>
+    </a>
+  </li>
+  <li role="presentation">
+    <a href="#">
+      <span class="octicon octicon-pulse"></span>
+      Pulse
+    </a>
+  </li>
+  <li role="presentation">
+    <a href="#">
+      <span class="octicon octicon-graph"></span>
+      Graphs
+    </a>
+  </li>
+</ul>

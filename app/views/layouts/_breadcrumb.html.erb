@@ -1,0 +1,10 @@
+<ol class="breadcrumb float-sm-right">
+  <% ol.each_with_index do |n, index| %>
+    <% if index == ol.count-1 %>
+      <li class="breadcrumb-item active"><%= n[:title] %></li>
+      <% next %>
+    <% end %>
+
+    <li class="breadcrumb-item"><%= link_to n[:title], n[:url] %></li>
+  <% end %>
+</ol>
