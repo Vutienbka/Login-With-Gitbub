@@ -45,7 +45,7 @@ I added [auth_controller] with following actions to handle routes.
 - [callback] handles response from Github. It will request `access_token` from Github. Further, with `access_token` will be requesting user info that will be stored (if doesn't exist) on the database and session
 - in the [logout] action will be removed user id from session, so will redirect to root url with flash message
 - in the [user_profile] to see profile of current user
-- 
+ 
 - [app/controller/repositories_controller.rb] -> defines the top level GraphQL queries to fetch repository list and show pages.
 - [app/views/repositories/index.html.erb] -> shows the root template's listing query and composition over subviews.
 - [app/views/repositories/_repositories.html.erb] -> makes use of GraphQL connections to show the first couple items and a "load more" button.
@@ -55,7 +55,7 @@ I added [auth_controller] with following actions to handle routes.
 - [app/views/repositories/issues.html.erb]-> shows the template for the issues show page.
 - [app/controller/issues.rb] -> defines controller helpers for executing GraphQL query requests.
 - [app/views/repositories/user_profile.html.erb]-> shows the template for the current_user's profile page.
-- [app/controller/issues.rb] -> defines controller helpers for executing get user's information from database.
+- [app/controller/user_profile.rb] -> defines controller helpers for executing get user's information from database.
 
 - [app/controller/application_controller.rb] -> defines controller helpers for executing GraphQL query requests.
 - [config/application.rb] -> configures `GraphQL::Client` to point to the GitHub GraphQL endpoint.
