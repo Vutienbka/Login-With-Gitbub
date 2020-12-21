@@ -3,6 +3,8 @@ module AuthHelper
 	# Logs in the given user.
 	def log_in(user)
     session[:user_id] = user.id
+    user = User.find(session[:user_id])  
+    User.current = user  
   end
 
   # Returns the current logged-in user (if any).

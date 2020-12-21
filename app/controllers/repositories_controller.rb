@@ -1,20 +1,12 @@
 class RepositoriesController < ApplicationController
   include RepoAuthen
   # Define query for repository listing.
-  #
-  # All queries MUST be assigned to constants and therefore be statically
-  # defined. Queries MUST NOT be generated at request time.
   
   IndexQuery = RepoAuthen::Client.parse <<-'GRAPHQL'
     # All read requests are defined in a "query" operation
     query {
       # viewer is the currently authenticated User
       viewer {
-        # "...FooConstant" is the fragment spread syntax to include the index
-        # view's fragment.
-        #
-        # "Views::Repositories::Index::Viewer" means the fragment is defined
-        # in app/views/repositories/index.html.erb and named Viewer.
         ...Views::Repositories::Index::Viewer
       }
     }
@@ -25,26 +17,23 @@ class RepositoriesController < ApplicationController
     # Use query helper defined in ApplicationController to execute the query.
     # `query` returns a GraphQL::Client::QueryResult instance with accessors
     # that map to the query structure.
+
     data = query IndexQuery
 
     # Render the app/views/repositories/index.html.erb template with our
     # current User.
-    #
-    # Using explicit render calls with locals is preferred to implicit render
-    # with instance variables.
     render "repositories/index", locals: {
       viewer: data.viewer
     }
   end
 
-
   # Define query for "Show more repositories..." AJAX action.
   MoreQuery = RepoAuthen::Client.parse <<-'GRAPHQL'
     # This query uses variables to accept an "after" param to load the next
-    # 10 repositories.
+    # 30 repositories.
     query($after: String!) {
       viewer {
-        repositories(first: 10, after: $after) {
+        repositories(first: 30, after: $after) {
           # Instead of refetching all of the index page's data, we only need
           # the data for the repositories container partial.
           ...Views::Repositories::Repositories::RepositoryConnection
@@ -58,19 +47,15 @@ class RepositoriesController < ApplicationController
     # Execute the MoreQuery passing along data from params to the query.
     data = query MoreQuery, after: params[:after]
 
-    # Using an explicit render again, just render the repositories list partial
-    # and return it to the client.
     render partial: "repositories/repositories", locals: {
       repositories: data.viewer.repositories
     }
   end
 
-
   # Define query for repository show page.
   ShowQuery = RepoAuthen::Client.parse <<-'GRAPHQL'
     # Query is parameterized by a $id variable.
     query($id: ID!) {
-      # Use global id Node lookup
       node(id: $id) {
         # Include fragment for app/views/repositories/show.html.erb
         ...Views::Repositories::Show::Repository
@@ -80,32 +65,6 @@ class RepositoriesController < ApplicationController
 
   # GET /repositories/ID
   def show
-    # Though we've only defined part of the ShowQuery in the controller, when
-    # query(ShowQuery) is executed, we're sending along the query as well as
-    # all of its fragment dependencies to the API server.
-    #
-    # Here's the raw query that's actually being sent.
-    #
-    # query RepositoriesController__ShowQuery($id: ID!) {
-    #   node(id: $id) {
-    #     ...Views__Repositories__Show__Repository
-    #   }
-    # }
-    #
-    # fragment Views__Repositories__Show__Repository on Repository {
-    #   id
-    #   owner {
-    #     login
-    #   }
-    #   name
-    #   description
-    #   homepageUrl
-    #   ...Views__Repositories__Navigation__Repository
-    # }
-    #
-    # fragment Views__Repositories__Navigation__Repository on Repository {
-    #   hasIssuesEnabled
-    # }
     data = query ShowQuery, id: params[:id]
 
     if repository = data.node
@@ -115,7 +74,7 @@ class RepositoriesController < ApplicationController
     else
       # If node can't be found, 404. This may happen if the repository doesn't
       # exist, we don't have permission or we used a global ID that was the
-      # wrong type.
+      # wrong type.repository
       head :not_found
     end
   end
@@ -175,4 +134,79 @@ class RepositoriesController < ApplicationController
       head :not_found
     end
   end
+
+  ListStargazers = RepoAuthen::Client.parse <<-'GRAPHQL'
+  query($id: ID!) {
+      node(id: $id) {
+        ...Views::Repositories::Stargazers::Repository
+      }
+    }
+GRAPHQL
+
+  def stargazers
+    data = query ListStargazers, id: params[:id]
+    if repository = data.node
+      render "repositories/stargazers", locals: {
+        repository: repository
+      }
+    else
+      head :not_found
+    end
+  end
+
+  MoreStargazers = RepoAuthen::Client.parse <<-'GRAPHQL'
+  query($after: String!, $owner: String!, $name: String!) {
+    repository(owner:$owner, name: $name) {
+      stargazers(first: 30, after: $after) {
+        ...Views::Repositories::ListStargazers::StargazerConnection
+      }
+    }
+  }
+GRAPHQL
+
+def more_stargazers
+  data = query MoreStargazers, after: params[:after], owner: params[:owner], name:params[:name]
+
+  render partial: "repositories/list_stargazers", locals: {
+    stargazers: data.repository.stargazers
+  }
+end
+  
+ListIssues = RepoAuthen::Client.parse <<-'GRAPHQL'
+  query($id: ID!) {
+      node(id: $id) {
+        ...Views::Repositories::Issues::Repository
+      }
+    }
+GRAPHQL
+
+  def issues
+    data = query ListIssues, id: params[:id]
+    if repository = data.node
+      render "repositories/issues", locals: {
+        repository: repository
+      }
+    else
+      head :not_found
+    end
+  end
+
+  MoreIssues = RepoAuthen::Client.parse <<-'GRAPHQL'
+  query($after: String!, $owner: String!, $name: String!) {
+    repository(owner:$owner, name: $name) {
+      issues(first: 30, after: $after) {
+        ...Views::Repositories::ListIssues::IssueConnection
+      }
+    }
+  }
+GRAPHQL
+
+  def more_issues
+    data = query MoreIssues, after: params[:after], owner: params[:owner], name:params[:name]
+
+    render partial: "repositories/list_issues", locals: {
+      issues: data.repository.issues
+    }
+  end
+
 end

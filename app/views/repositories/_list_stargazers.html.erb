@@ -1,0 +1,48 @@
+<%graphql
+  fragment StargazerConnection on StargazerConnection {
+     edges {
+        starredAt
+        node {
+          login
+          avatarUrl
+        }
+        cursor
+      }
+
+    # Pagination related metadata
+    pageInfo {
+      hasNextPage
+    }
+  }
+%>
+<% stargazers = Views::Repositories::ListStargazers::StargazerConnection.new(stargazers) %>
+
+<% stargazer_list = stargazers.edges %>
+  <ul class="list-group">
+    <% stargazer_list.each_with_index do |s, index|%>
+      <li class="list-group-item">
+        <span class="star-badge">
+          <button>
+            <span class="octicon octicon-star highlight"></span>
+          </button>
+        </span>
+        <a href="/">
+        <img src="<%= s.node.avatarUrl %>" alt="N/A" class="img-circle my-page-img">
+          Stargazer Name: <%= s.node.login %> / Starred At: <%=s.starredAt.to_date.strftime("%Y-%m-%d") %>
+        </a>
+      </li>
+    <% end %>
+
+    <% if stargazers.page_info.has_next_page? %>
+      <li class="list-group-item show-more text-center">
+        <a class="js-load-more btn btn-primary" id="spin_wrapper" href="<%= more_stargazers_repository_path(after: stargazers.edges.last.cursor) %>">
+          Load more...
+        </a>
+        <span class="octicon octicon-sync spinner"></span>
+      </li>
+    <% end %>
+  </ul>
+
+  
+
+  

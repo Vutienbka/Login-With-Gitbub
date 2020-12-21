@@ -1,24 +1,24 @@
-<% content_for :title,'NEWJI | 取引先' %>
-<% breadcrumb_add '取引先' %>
-
+<% content_for :title,'GITHUB | ログイン' %>
+<% breadcrumb_add 'ログイン' %>
+<%= stylesheets 'newji'%>
 
 <% if logged_in? %>
   <h3>
-    You are logged in as <%= current_user.username %>.
-    <small>Click the button below to log out.</small>
+    ログインされました <%= current_user.username %>.
+    <small>ログアウトするためにボタンをクリックしてください</small>
   </h3>
-  <%= button_to "ログアウト", logout_path, method: :delete %>
+  <%= button_to "ログアウト", '/logout', method: 'delete' %>
 <% else %>
 <div class="login-box">
   <div class="login-logo">
-    <a href="../index3.html" class="en font-weight-bold">LOGIN HITHUB</a>
+    <a href="#" class="ja font-weight-bold">ギットハブログイン</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">以下を入力して<span class="textbr">ログインしてください</span></p>
 
-      <form action="../index3.html" method="post">
+      <form action="#" method="post">
         <div class="input-group input-group--modal mb-3">
           <input type="email" class="form-control form-control--ie" placeholder="メールアドレス" required>
         </div>
@@ -39,17 +39,17 @@
             <button type="submit" class="btn newji-btn--dark-blue btn-block w-100 my-3 my-sm-0">ログイン</button>
           </div>
           <div class="col-12 col-sm-12">
-            <p class="text-center">Or</p>
+            <p class="text-center">もしくは</p>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
       <p class="mb-1">
-        <%= link_to 'LOGIN WITH GITHUB', auth_github_path, class: "base-color　btn newji-btn--dark-blue btn-block w-100 my-3 my-sm-0 text-center", type: 'button' %>
+        <%= link_to 'ギットハブでログイン', auth_github_path, class: "base-color　btn newji-btn--dark-blue btn-block w-100 my-3 my-sm-0 text-center" %>
       </p>
-      <p class="mb-0">
-        <a href="login.html" class="base-color">新しくアカウントを作成する</a>
+      <p class="mb-0 text-center">
+        <a href="#" class="base-color">新しくアカウントを作成する</a>
       </p>
     </div>
     <!-- /.login-card-body -->
@@ -60,6 +60,5 @@
 <% end %>
 
 <% flash.each do |name, msg| -%>
-
 	<%= content_tag :div, msg %>
 <% end -%>

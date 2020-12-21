@@ -1,0 +1,32 @@
+<% content_for :title,'GITHUB | イシュー' %>
+<% breadcrumb_add "レポジトリ" %>
+<% breadcrumb_add "イシューリスト" %>
+<%= stylesheets 'newji'%>
+
+<%graphql
+  fragment Repository on Repository {
+    id
+    description
+    url
+    issues(states:[OPEN,CLOSED], first:30){
+      totalCount,
+          ...Views::Repositories::ListIssues::IssueConnection
+    }
+  }
+%>
+<% content_for :content_header do %>
+
+<% repository = Views::Repositories::Issues::Repository.new(repository) %>
+
+  <div class="repositories">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>Repository issues quantity:</strong>
+        <%# NOTE: total_count is snake case here %>
+        <span class="badge"><%= repository.issues.totalCount %></span>
+      </li>
+      <%= render "repositories/list_issues", { issues: repository.issues} %>
+    </ul>
+  </div>
+
+<% end %>

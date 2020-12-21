@@ -1,3 +1,5 @@
+<%= javascripts 'newji'%>
+
 <nav class="main-header navbar navbar-expand navbar-blak header-blue-primary">
   <a class="nav-link js-click-a" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 
@@ -5,21 +7,18 @@
   <ul class="navbar-nav ml-auto">
     <!-- Notifications Dropdown Menu -->
     <li class="nav-item">
-      <a class="nav-link" data-toggle="dropdown" href="#" title="マイページ">
-        <%= image_tag 'img/default_user.png', class: 'img-circle my-page-img', alt: 'User Image' %>
+      <a class="nav-link" data-toggle="dropdown" href="#" title="アバーテ">
+        <%= image_tag "#{User.first.avartar}", class: 'img-circle my-page-img user_img', alt: 'User Image', height: '35', width: '35' %>
       </a>
     </li>
-
-    <!-- Messages Dropdown Menu -->
-    <li class="nav-item dropdown">
-      <a class="nav-link" data-toggle="dropdown" href="#" title="ヘルプ">
-        <span><%= @user.username if @user.present?%></span>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="dropdown" href="#" title="ユーザーネーム">
+        <span><%=User.first.present? ? User.first.username : 'Unnamed'%></span>
       </a>
     </li>
-  
-     <li class="nav-item dropdown">
-      <%= link_to 'Logout', logout_path, class: "nav-link", method:'delete'%>
-      </a>
+     <li class="nav-item">
+      <%= link_to "ログアウト", logout_path, method: "delete", class: "btn btn-primary logout", title: "ログアウト" %>
     </li>
   </ul>
+  
 </nav>

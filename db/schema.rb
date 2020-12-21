@@ -10,16 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_21_095558) do
+ActiveRecord::Schema.define(version: 20201220112330) do
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.string "uid"
-    t.string "provider"
-    t.string "token"
+    t.string   "username"
+    t.string   "email"
+    t.string   "uid"
+    t.string   "provider"
+    t.string   "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.         "avartar"
   end
 
 end

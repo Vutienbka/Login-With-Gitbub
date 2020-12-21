@@ -1,0 +1,41 @@
+<%graphql
+  fragment IssueConnection on IssueConnection {
+     edges{
+        node{
+          title
+          state
+          url
+          createdAt,
+          body
+        }
+        cursor
+      }
+          
+    # Pagination related metadata
+    pageInfo {
+      hasNextPage
+    }
+  }
+%>
+<% issues = Views::Repositories::ListIssues::IssueConnection.new(issues) %>
+
+<% issue_list = issues.edges %>
+  <ul class="list-group">
+    <% issue_list.each_with_index do |issue, index|%>
+      <li class="list-group-item">
+        <span class="octicon octicon-issue-opened"></span>
+        <a href="#">
+          Title: <%= issue.node.title %> / Created At: <%=issue.node.createdAt.to_date.strftime("%Y-%m-%d") %>
+        </a>
+      </li>
+    <% end %>
+
+    <% if issues.page_info.has_next_page? %>
+      <li class="list-group-item show-more text-center">
+        <a class="js-load-more btn btn-primary" id="spin_wrapper" href="<%= more_issues_repository_path(after: issues.edges.last.cursor) %>">
+          Load more...
+        </a>
+        <span class="octicon octicon-sync spinner"></span>
+      </li>
+    <% end %>
+  </ul>

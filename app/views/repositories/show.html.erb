@@ -1,57 +1,27 @@
-<%#
-  GraphQL fragments are defined in the templates themselves.
+<% content_for :title,'GITHUB | レポジトリ' %>
+<% breadcrumb_add "レポジトリ" %>
+<% breadcrumb_add "レポジトリデテール" %>
 
-  All data being used directly in this template should also be reflected
-  statically in the fragment. And vice versa, all fields in the query fragment
-  should only be used directly in this template. You MUST keep static queries
-  and runtime usage in sync. Defining queries in the same file makes
-  this aspect easier to manage.
-%>
 <%graphql
-  # Fragments are parts of queries, they can't be executed themselves.
-  # This fragment is defined on the Repository type and is coincidentally named
-  # "Repository". You can name the fragment whatever you'd like. Its the name
-  # that is exported as a Ruby constant, so it must start with a capital letter.
-  #
-  # Its exported as "Views::Repositories::Show::Repository". The module path to
-  # the tempate then the name of the fragment.
   fragment Repository on Repository {
-    # id is a GraphQL global id, not a database id
-    # It is an opaque base64 identifier we can use to refetch the entity.
+
     id
 
-    # owner is a User or Organization
     owner {
       login
     }
 
-    # The repository's name
     name
 
-    # Optional description text and homepage URL
     description
     homepageUrl
 
-    # Include repositories/_navigation.html.erb data dependencies
     ...Views::Repositories::Navigation::Repository
 
     ...Views::Repositories::Star::Repository
   }
 %>
-<%#
-  The first step of any GraphQL defined view is to cast arguments to the locally
-  defined fragment result wrapper. In a statically typed langauge, you can think
-  of it as passing a concrete type into a function that accepts an interface.
 
-    def repositories_show(repository: Views::Repositories::Show::Repository)
-
-  The wrapper serves two primary roles:
-
-  1. Provides Ruby friendly snake case accessors for accessing the underlying data
-  2. Only expose fields explicitly defined by this fragment.
-     `repository` is a full set of data, but fields included by the
-     ...Views::Repositories::Navigation::Repository spread are hidden.
-%>
 <% repository = Views::Repositories::Show::Repository.new(repository) %>
 
 <div class="header clearfix">
@@ -65,6 +35,13 @@
 
   <div class="inline-block star-badge-header">
     <%= render "repositories/star", repository: repository %>
+  </div>
+  <div class="inline-block">
+    <a href="<%= stargazers_repository_path(repository.id, repository.owner.login.to_s, repository.name.to_s) %>" class="btn btn-primary">Load Stargazers</a>
+  </div>
+
+  <div class="inline-block">
+    <a href="#" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">Load Issues</a>
   </div>
 </div>
 
@@ -83,6 +60,29 @@
       <a class="btn btn-primary btn-lg" href="<%= repository.homepage_url %>" role="button">Homepage</a>
     <% end %>
 
-    <a class="btn btn-primary btn-lg" href="https://github.com/<%= repository.owner.login %>/<%= repository.name %>" role="button">View on GitHub</a>
+    <a class="btn btn-primary btn-lg" href="https://github.com/<%= repository.owner.login %>/<%= repository.name %>" role="button">ギットハブでレポジトリを見る</a>
   </p>
 </div>
+
+<!-- モーダル -->
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog modal-default">
+    <div class="modal-content">
+      <div class="modal-header modal-header--ordering">
+        <h6 class="modal-title"><%= repository.name %>のイシューリスト</h6>
+      </div>
+      <div class="modal-body text-center">
+        <h5 class="text-center pt-3">イシューリストショーよろしでしょうか？</h5>
+        <div class="inline-block">
+          <a href="<%= issues_repository_path(repository.id, repository.owner.login.to_s, repository.name.to_s) %>" class="btn btn-primary">Load Issues</a>
+        </div>
+        <div class="inline-block">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">閉じる</button>
+        </div>
+        
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+ </div> 

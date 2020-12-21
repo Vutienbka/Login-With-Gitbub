@@ -1,0 +1,33 @@
+<% content_for :title,'GITHUB | スターゲイザー' %>
+<% breadcrumb_add "レポジトリ" %>
+<% breadcrumb_add "スターゲイザーリスト" %>
+<%= stylesheets 'newji'%>
+
+<%graphql
+  fragment Repository on Repository {
+    id
+    viewerHasStarred
+    stargazers(first: 30){
+      totalCount,
+        ...Views::Repositories::ListStargazers::StargazerConnection
+    }
+  }
+%>
+
+<% content_for :content_header do %>
+
+<% repository = Views::Repositories::Stargazers::Repository.new(repository) %>
+
+  <div class="repositories">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <strong>Repository stargazers quantity:</strong>
+        <%# NOTE: total_count is snake case here %>
+        <span class="badge"><%= repository.stargazers.totalCount %></span>
+      </li>
+      <%= render "repositories/list_stargazers", { stargazers: repository.stargazers} %>
+    </ul>
+  </div>
+
+<% end%>
+

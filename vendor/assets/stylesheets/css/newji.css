@@ -111,28 +111,6 @@ a[data-toggle="dropdown"] > i {
   color: #ffffff;
 }
 
-/*カレンダー
-#calendar {
-  background-color: #EBECED;
-  text-align: center;
-  font-size: 8px;
-  line-height: 1;
-  overflow-y: hidden;
-  margin: 17px 0;
-  border-radius: 5px;
-  min-width: 220px;
-}
-カレンダーここまで*/
-
-/*.mt-2 .nav-pills .nav-item .nav-link.active {
-  background-color: #FF9B9B;
-}
-*/
-.badge.badge-info {
-  /*background-color: #007bff!important;*/
-  /*color: #007bff;*/
-}
-
 /*トップページのメイン部分*/
 .content-wrapper {
   background-color: #f0f0f0;

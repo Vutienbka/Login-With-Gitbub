@@ -65,9 +65,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'pry'
 gem 'pry-rails', '~> 0.3.9'
-gem "octokit", "~> 4.0"
-# gem 'graphql'
-# gem 'graphql-client'
 gem "graphql", "1.2.2"
 gem "graphql-client", "0.2.3"
 gem 'graphql-api'

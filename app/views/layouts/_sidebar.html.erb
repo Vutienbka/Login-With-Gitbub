@@ -1,19 +1,44 @@
-<aside class="main-sidebar">
-  <section class="sidebar">
-    <ul class="sidebar-menu" data-widget="tree">
-      <li class="header"><i class="fa fa-home" style="color: white;"></i><span style="padding-left: 10px";>ホーム</span></li>
-      <li class="<%= 'active' if controller_name == 'dashboard' %>">
-        <a href="#">
-          <i class="fa fa-dashboard"></i>
-          <span>ダッシュボード</span>
-        </a>
-      </li>
-      <li class="header">SETTINGS</li>
-      <li>
-        
-           <a><i class="fa fa-sign-out"></i> <span>ログアウト</span></a>
-        
-      </li>
-    </ul>
-  </section>
+<aside class="main-sidebar sidebar-blue-primary elevation-4">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+        <li class="nav-item">
+          <a href ="<%= user_profile_path %>" class="nav-link w-100">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>
+              ユーザーロフィール
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href ="<%= repository_list_path %>" class = "nav-link w-100">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>
+              レポジトリ　リスト
+            </p>
+          </a>  
+        </li>
+        <li class="nav-item">
+          <a href ="https://github.com/<%= current_user.username %>" class="nav-link w-100">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>
+              ギットハブで見る
+            </p>
+          </a>
+        </li>
+        <!-- Logout do not have in design -->
+        <li class="nav-item">
+          <a href ="<%= logout_path %>" data-method="delete" class = "nav-link w-100">
+          <i class="nav-icon fas fa-sign-out-alt"></i>
+          <p>
+            ログアウト
+          </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </aside>

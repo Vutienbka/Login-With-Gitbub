@@ -4,35 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-
     <title><%= yield(:title) %></title>
-    
     <%= csrf_meta_tags %>
-    <%= csrf_meta_tag %>
-
+    
+    <link rel="stylesheet" href="/octicons.min.css">
+    <link rel="stylesheet" href="/application.css">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
     <%= stylesheet_link_tag 'plugins/fontawesome-free/css/all.min'%>
+
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    
+    <!-- Bootstrap 4.0 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <!-- Theme style -->
     <%= stylesheet_link_tag 'css/adminlte.min'%>
-    <!--NEWJI独自のスタイル-->
-
+    <!--独自のスタイル-->
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.2.0/min/dropzone.min.js"></script>
-
     <%= yield :head %>
   </head>
-
-  <body class="hold-transition login-page">
-    <% if current_user.present? %>
+  
+  <% if current_user.present? %>
+    <body class="hold-transition">
       <div class="wrapper">
       <!-- Navbar -->
         <%= render "layouts/navbar" %>
-
         <!-- Main Sidebar Container -->
         <%= render "layouts/sidebar" %>
-        
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
           <!-- Content Header (Page header) -->
@@ -48,15 +52,17 @@
               <%= yield :content_header %>
             </div>
           </div>
-
           <!-- Main content -->
           <div class="content">
             <%= yield %>
           </div>
         </div>
       </div>
-    <% else %>
+    </body>
+  <% else %>
+    <body class="hold-transition login-page">
       <%= yield %>
-    <% end %>
-  </body>
+    </body>
+  <% end %>
+  
 </html>

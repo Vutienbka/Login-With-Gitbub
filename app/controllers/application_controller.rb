@@ -33,7 +33,7 @@ private
       # Use static access token from environment. However, here we have access
       # to the current request so we could configure the token to be retrieved
       # from a session cookie.
-      { access_token: RepoAuthen::Application.secrets.github_access_token }
+      { access_token: GithubAuth::Application.secrets.github_access_token }
     end
 
 
